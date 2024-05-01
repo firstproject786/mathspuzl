@@ -1,11 +1,15 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:math/second.dart';
 import 'package:math/third.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MaterialApp(
+Future<void> main() async {
+  await ScreenUtil.ensureScreenSize();
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: home(),
   ));
 }
@@ -23,36 +27,45 @@ class home extends StatefulWidget {
 
 class _homeState extends State<home> {
   final GlobalKey<FormState> formKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(360, 690));
+    double screenwidth = MediaQuery.of(context).size.width.w;
+    double screenhight = MediaQuery.of(context).size.height.h;
+    double actualwidthdp = ScreenUtil().setWidth(360);
+    double actualhightdp = ScreenUtil().setHeight(690);
+    double? pixeldestiny = ScreenUtil().pixelRatio;
+
     return WillPopScope(
       onWillPop: () {
         return WillPopCallback();
       },
       child: Scaffold(
           body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
+        width: screenwidth,
+        height: screenhight,
+        decoration: const BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover, image: AssetImage('img/background.jpg'))),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
-            margin: EdgeInsets.all(30),
+            margin: EdgeInsets.all(30.h),
             child: Center(
                 child: Text(
               'Math Puzzle',
               style: TextStyle(
-                  fontSize: 50,fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.italic,
-                  fontFamily: 'f${2}',
-                  ),
+                fontSize: 50.sp,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic,
+                fontFamily: 'f${2}',
+              ),
             )),
           ),
           Container(
-            margin: EdgeInsets.all(20),
-            height: 500,
-            decoration: BoxDecoration(
+            margin: EdgeInsets.all(20.h),
+             height: 450.h,
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage('img/blackboard_main_menu.png'))),
@@ -70,13 +83,13 @@ class _homeState extends State<home> {
                   });
                 },
                 child: Container(
-                  margin: EdgeInsets.all(5),
-                  width: double.infinity,
+                  margin: EdgeInsets.all(5.h),
+                  width: screenwidth,
                   child: Center(
                       child: Text('Continue',
                           style: TextStyle(fontFamily: 'f${1}',
                                fontStyle: FontStyle.italic,
-                              fontSize: 60,
+                              fontSize: 60.sp,
                               color: Colors.white))),
                 ),
               ),
@@ -90,24 +103,24 @@ class _homeState extends State<home> {
                   ));
                 },
                 child: Container(
-                  margin: EdgeInsets.all(5),
-                  width: double.infinity,
+                  margin: EdgeInsets.all(5.h),
+                  width: screenwidth,
                   child: Center(
                       child: Text('Puzzle ',
                           style: TextStyle(fontFamily: 'f${1}',
                               fontStyle: FontStyle.italic,
-                              fontSize: 60,
+                              fontSize: 60.sp,
                               color: Colors.white))),
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(5),
-                width: double.infinity,
+                margin: EdgeInsets.all(5.h),
+                width: screenwidth,
                 child: Center(
                     child: Text('Buy Pro',
                         style: TextStyle(fontFamily: 'f${1}',
                             fontStyle: FontStyle.italic,
-                            fontSize: 50,
+                            fontSize: 50.sp,
                             color: Colors.white))),
               ),
             ]),
@@ -157,7 +170,7 @@ class _homeState extends State<home> {
                 },
                 child: Text(
                   'No',
-                  style: TextStyle(fontSize: 20, color: Colors.blue),
+                  style: TextStyle(fontSize: 20.sp, color: Colors.blue),
                 )),
             InkWell(
                 onTap: () {
@@ -165,7 +178,7 @@ class _homeState extends State<home> {
                 },
                 child: Text(
                   'yes',
-                  style: TextStyle(fontSize: 20, color: Colors.blue),
+                  style: TextStyle(fontSize: 20.sp, color: Colors.blue),
                 ))
           ],
         );
